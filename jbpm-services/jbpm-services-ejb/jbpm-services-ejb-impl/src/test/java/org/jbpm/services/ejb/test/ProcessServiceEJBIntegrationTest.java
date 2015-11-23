@@ -42,6 +42,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jbpm.kie.services.impl.KModuleDeploymentUnit;
 import org.jbpm.services.api.model.DeploymentUnit;
 import org.jbpm.services.api.model.NodeInstanceDesc;
+import org.jbpm.services.api.model.ProcessInstanceDesc;
 import org.jbpm.services.ejb.api.DefinitionServiceEJBLocal;
 import org.jbpm.services.ejb.api.DeploymentServiceEJBLocal;
 import org.jbpm.services.ejb.api.ProcessServiceEJBLocal;
@@ -84,6 +85,7 @@ public class ProcessServiceEJBIntegrationTest extends AbstractTestSupport {
         processes.add("processes/humanTask.bpmn");
         processes.add("processes/signal.bpmn");
         processes.add("processes/import.bpmn");
+        processes.add("processes/startend.bpmn2");
         
         InternalKieModule kJar1 = createKieJar(ks, releaseId, processes);
         File pom = new File("target/kmodule", "pom.xml");
@@ -697,5 +699,30 @@ public class ProcessServiceEJBIntegrationTest extends AbstractTestSupport {
     	
     	pi = processService.getProcessInstance(processInstanceId);    	
     	assertNull(pi);
+    }
+    
+    @Test
+    public void testStartMinimalProcessProcess() {
+        assertNotNull(deploymentService);
+        
+        KModuleDeploymentUnit deploymentUnit = new KModuleDeploymentUnit(GROUP_ID, ARTIFACT_ID, VERSION);
+        
+        deploymentService.deploy(deploymentUnit);
+        units.add(deploymentUnit);
+        
+        boolean isDeployed = deploymentService.isDeployed(deploymentUnit.getIdentifier());
+        assertTrue(isDeployed);
+        
+        assertNotNull(processService);
+        
+        long processInstanceId = processService.startProcess(deploymentUnit.getIdentifier(), "startEnd");
+        assertNotNull(processInstanceId);
+        
+        ProcessInstance pi = processService.getProcessInstance(processInstanceId);      
+        assertNull(pi);
+        
+        Collection<ProcessInstanceDesc> logs = runtimeDataService.getProcessInstancesByProcessDefinition("startEnd", new QueryContext());
+        assertNotNull(logs);
+        assertEquals(1, logs.size());
     }
 }

@@ -18,6 +18,8 @@ package org.jbpm.services.ejb.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.kie.scanner.MavenRepository.getMavenRepository;
 
 import java.io.File;
@@ -27,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +49,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.builder.ReleaseId;
+import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.query.QueryContext;
 import org.kie.api.task.model.TaskSummary;
 import org.kie.internal.query.QueryFilter;
 import org.kie.scanner.MavenRepository;
@@ -172,6 +177,31 @@ public class ClientProcessServiceWithCustomDataEJBTest extends AbstractKieServic
         assertEquals(2, (int)desc.getState());
         processInstanceId = null;
 	}
+	
+	@Test
+    public void testStartMinimalProcessProcess() {
+        assertNotNull(deploymentService);
+        
+        KModuleDeploymentUnit deploymentUnit = new KModuleDeploymentUnit(GROUP_ID, ARTIFACT_ID, VERSION);
+        
+        deploymentService.deploy(deploymentUnit);
+        units.add(deploymentUnit);
+        
+        boolean isDeployed = deploymentService.isDeployed(deploymentUnit.getIdentifier());
+        assertTrue(isDeployed);
+        
+        assertNotNull(processService);
+        
+        long processInstanceId = processService.startProcess(deploymentUnit.getIdentifier(), "startEnd");
+        assertNotNull(processInstanceId);
+        
+        ProcessInstance pi = processService.getProcessInstance(processInstanceId);      
+        assertNull(pi);
+        
+        Collection<ProcessInstanceDesc> logs = runtimeDataService.getProcessInstancesByProcessDefinition("startEnd", new QueryContext());
+        assertNotNull(logs);
+        assertEquals(1, logs.size());
+    }
 	
 	protected Object getInstance(String className, Object[] params) {
 		try {
