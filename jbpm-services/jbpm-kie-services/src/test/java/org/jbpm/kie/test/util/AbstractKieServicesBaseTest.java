@@ -249,6 +249,15 @@ public abstract class AbstractKieServicesBaseTest {
         ds.getDriverProperties().put("user", "sa");
         ds.getDriverProperties().put("password", "sasa");
         ds.getDriverProperties().put("URL", "jdbc:h2:mem:mydb");
+        
+//        ds.setClassName("org.postgresql.xa.PGXADataSource");
+//        ds.setMaxPoolSize(30);
+//        ds.setAllowLocalTransactions(true);
+//        ds.getDriverProperties().put("user", "bpms");
+//        ds.getDriverProperties().put("password", "bpms");
+//        ds.getDriverProperties().put("serverName", "localhost");
+//        ds.getDriverProperties().put("portNumber", "5432");
+//        ds.getDriverProperties().put("databaseName", "bpms");
 
         ds.init();
     }
