@@ -30,7 +30,7 @@
             <version name="version" access="FIELD" >
                 <column name="OPTLOCK" />
             </version>
-            <element-collection name="eventTypes" target-class="java.lang.String" access="FIELD" >
+            <element-collection name="eventTypes" target-class="java.lang.String" access="PROPERTY" >
                 <collection-table name="EventTypes">
                     <join-column name="InstanceId"/>
                 </collection-table> 

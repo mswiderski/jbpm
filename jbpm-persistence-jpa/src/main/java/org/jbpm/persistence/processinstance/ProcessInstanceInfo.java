@@ -289,7 +289,15 @@ public class ProcessInstanceInfo{
     }
     
     public Set<String> getEventTypes() {
+        this.eventTypes.clear();
+        for ( String type : processInstance.getEventTypes() ) {
+            eventTypes.add( type );
+        }
         return eventTypes;
+    }
+    
+    public void setEventTypes(Set<String> eventTypes) {
+        this.eventTypes = new HashSet<String>(eventTypes);
     }
 
     public byte [] getProcessInstanceByteArray() { 

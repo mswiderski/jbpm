@@ -23,7 +23,7 @@
         <property name="processInstanceByteArray" type="org.hibernate.type.PrimitiveByteArrayBlobType" 
             column="processInstanceByteArray" access="field" length="2147483647" />
 
-    <set name="eventTypes" table="EventTypes" access="field">
+    <set name="eventTypes" table="EventTypes" access="property">
       <key column="InstanceId" />
       <element column="element" type="string" />
     </set>
