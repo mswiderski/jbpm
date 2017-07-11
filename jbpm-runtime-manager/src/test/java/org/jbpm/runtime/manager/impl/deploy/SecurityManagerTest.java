@@ -37,7 +37,7 @@ import org.kie.internal.runtime.manager.SecurityManager;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 import org.kie.internal.task.api.UserGroupCallback;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class SecurityManagerTest extends AbstractBaseTest {
 	

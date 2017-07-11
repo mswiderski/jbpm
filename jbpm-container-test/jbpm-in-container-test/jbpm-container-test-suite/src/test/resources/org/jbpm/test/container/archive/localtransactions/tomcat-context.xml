@@ -6,10 +6,16 @@
    -->
     <Loader delegate="false"/>
 
-    <Listener className="bitronix.tm.integration.tomcat55.BTMLifecycleListener" />
-
     <Resource name="TransactionSynchronizationRegistry" auth="Container" type="javax.transaction.TransactionSynchronizationRegistry"
-              factory="bitronix.tm.BitronixTransactionSynchronizationRegistryObjectFactory" />
+              factory="org.jboss.narayana.tomcat.jta.TransactionSynchronizationRegistryFactory" />
 
-    <Transaction factory="bitronix.tm.BitronixUserTransactionObjectFactory" />
+    <Transaction factory="org.jboss.narayana.tomcat.jta.UserTransactionFactory" />
+
+    <!-- Database resources -->
+    <Resource name="h2DataSource" uniqueName="h2Datasource" auth="Container" type="org.h2.jdbcx.JdbcDataSource" username="sa"
+              user="sa" password="sa" url="jdbc:h2:mem:test-db;MVCC=TRUE;DB_CLOSE_DELAY=-1" description="H2 Data Source" loginTimeout="0"
+              factory="org.h2.jdbcx.JdbcDataSourceFactory"/>
+    <Resource name="jdbc/jbpm" uniqueName="transactionalDataSource" auth="Container" type="javax.sql.DataSource"
+              username="sa" password="sa" driverClassName="com.arjuna.ats.jdbc.TransactionalDriver"
+              url="jdbc:arjuna:java:comp/env/h2DataSource" description="Transactional Driver Data Source"/>
 </Context>

@@ -15,8 +15,7 @@
 
 package org.jbpm.runtime.manager.impl;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
-import org.drools.core.command.SingleSessionCommandService;
+import org.jbpm.test.PoolingDataSource;
 import org.drools.core.command.impl.CommandBasedStatefulKnowledgeSession;
 import org.drools.core.runtime.ChainableRunner;
 import org.drools.persistence.PersistableRunner;

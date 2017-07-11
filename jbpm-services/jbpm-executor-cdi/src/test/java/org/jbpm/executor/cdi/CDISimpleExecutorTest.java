@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.kie.api.executor.ExecutorService;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 @RunWith(Arquillian.class)
 public class CDISimpleExecutorTest extends BasicExecutorBaseTest {

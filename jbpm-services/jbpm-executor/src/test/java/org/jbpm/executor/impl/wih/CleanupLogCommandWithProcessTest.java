@@ -57,7 +57,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.RuntimeManagerRegistry;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class CleanupLogCommandWithProcessTest extends AbstractExecutorBaseTest {
 

@@ -37,7 +37,7 @@ import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.api.task.UserGroupCallback;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class MvelResolverDeploymentDescriptorManagerTest extends AbstractDeploymentDescriptorTest {
 	protected static final String ARTIFACT_ID = "test-module";

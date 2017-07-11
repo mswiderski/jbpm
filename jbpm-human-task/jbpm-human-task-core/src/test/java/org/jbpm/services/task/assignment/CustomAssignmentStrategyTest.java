@@ -15,7 +15,7 @@
  */
 package org.jbpm.services.task.assignment;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.jbpm.services.task.HumanTaskServiceFactory;

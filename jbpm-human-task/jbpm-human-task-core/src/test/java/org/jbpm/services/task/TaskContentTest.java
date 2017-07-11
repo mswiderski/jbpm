@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.kie.api.task.model.Task;
 import org.kie.internal.task.api.InternalTaskService;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class TaskContentTest extends HumanTaskServicesBaseTest {
     private PoolingDataSource pds;

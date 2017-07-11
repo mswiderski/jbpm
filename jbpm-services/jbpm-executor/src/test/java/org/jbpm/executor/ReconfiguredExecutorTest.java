@@ -37,7 +37,7 @@ import org.kie.api.executor.ExecutorService;
 import org.kie.api.executor.RequestInfo;
 import org.kie.api.runtime.query.QueryContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 
 public class ReconfiguredExecutorTest {

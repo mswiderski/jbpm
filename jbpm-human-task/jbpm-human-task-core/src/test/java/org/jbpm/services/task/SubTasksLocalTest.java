@@ -22,7 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kie.internal.task.api.InternalTaskService;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 
 public class SubTasksLocalTest extends SubTasksBaseTest {

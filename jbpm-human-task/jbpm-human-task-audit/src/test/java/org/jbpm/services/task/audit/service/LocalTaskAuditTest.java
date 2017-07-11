@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kie.internal.task.api.InternalTaskService;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 import org.jbpm.services.task.audit.TaskAuditServiceFactory;
 
 public class LocalTaskAuditTest extends TaskAuditBaseTest {

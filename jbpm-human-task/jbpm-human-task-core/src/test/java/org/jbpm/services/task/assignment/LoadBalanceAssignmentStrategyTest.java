@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class LoadBalanceAssignmentStrategyTest extends AbstractAssignmentTest {
     private static final Logger logger = LoggerFactory.getLogger(LoadBalanceAssignmentStrategyTest.class);

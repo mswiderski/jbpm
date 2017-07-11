@@ -50,7 +50,7 @@ import org.kie.internal.task.api.AuditTask;
 import org.kie.internal.task.api.InternalTaskService;
 import org.kie.internal.task.api.model.InternalTask;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class LocalTaskAuditWithDeadlineTest extends HumanTaskServicesBaseTest {
 

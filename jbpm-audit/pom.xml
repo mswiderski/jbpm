@@ -67,6 +67,10 @@
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.narayana.jta</groupId>
+      <artifactId>narayana-jta</artifactId>
+    </dependency>
 
     <dependency>
       <!--  only needed for metadata generation -->
@@ -77,6 +81,11 @@
     </dependency>
 
     <!-- TEST -->
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-flow-builder</artifactId>
@@ -108,11 +117,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.btm</groupId>
-      <artifactId>btm</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -53,7 +53,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.task.api.InternalTaskService;
 import org.kie.internal.task.api.model.ContentData;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 
 public class LifeCycleLocalWithRuleServiceTest extends HumanTaskServicesBaseTest {

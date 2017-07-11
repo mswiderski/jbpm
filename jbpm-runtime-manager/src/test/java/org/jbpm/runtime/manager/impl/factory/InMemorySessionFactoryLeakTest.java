@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.UUID;
 
+import com.arjuna.ats.jta.TransactionManager;
 import org.jbpm.process.instance.event.DefaultSignalManagerFactory;
 import org.jbpm.process.instance.impl.DefaultProcessInstanceManagerFactory;
 import org.jbpm.runtime.manager.impl.AbstractRuntimeManager;
@@ -53,6 +54,9 @@ import org.kie.internal.runtime.manager.context.CaseContext;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 import org.kie.internal.task.api.UserGroupCallback;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 @RunWith(Parameterized.class)
 public class InMemorySessionFactoryLeakTest extends AbstractBaseTest {
     
@@ -79,7 +83,7 @@ public class InMemorySessionFactoryLeakTest extends AbstractBaseTest {
     public TestName testName = new TestName();
     
     @Before
-    public void setup() {
+    public void setup() throws NamingException {
         TestUtil.cleanupSingletonSessionId();
         Properties properties= new Properties();
         properties.setProperty("mary", "HR");
@@ -87,6 +91,10 @@ public class InMemorySessionFactoryLeakTest extends AbstractBaseTest {
         userGroupCallback = new JBossUserGroupCallbackImpl(properties);
         
         createRuntimeManager();
+
+        new InitialContext().rebind("java:comp/UserTransaction", com.arjuna.ats.jta.UserTransaction.userTransaction());
+        new InitialContext().rebind("java:comp/TransactionManager", TransactionManager.transactionManager());
+        new InitialContext().rebind("java:comp/TransactionSynchronizationRegistry", new com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionSynchronizationRegistryImple());
     }
     
     @After

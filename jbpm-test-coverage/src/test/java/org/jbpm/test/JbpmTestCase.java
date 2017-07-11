@@ -16,9 +16,6 @@
 
 package org.jbpm.test;
 
-import java.util.Map;
-import java.util.Properties;
-
 import org.assertj.core.api.Assertions;
 import org.jbpm.persistence.util.PersistenceUtil;
 import org.junit.Rule;
@@ -31,11 +28,12 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import qa.tools.ikeeper.client.BugzillaClient;
 import qa.tools.ikeeper.client.JiraClient;
 import qa.tools.ikeeper.test.IKeeperJUnitConnector;
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+
+import java.util.Map;
+import java.util.Properties;
 
 public abstract class JbpmTestCase extends JbpmJUnitBaseTestCase {
 

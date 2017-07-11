@@ -15,7 +15,7 @@
 
 package org.jbpm.runtime.manager.concurrent;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 import org.drools.core.command.SingleSessionCommandService;
 import org.drools.core.command.impl.CommandBasedStatefulKnowledgeSession;
 import org.hibernate.StaleObjectStateException;

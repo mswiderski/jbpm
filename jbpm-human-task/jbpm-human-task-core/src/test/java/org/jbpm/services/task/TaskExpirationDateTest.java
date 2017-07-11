@@ -15,7 +15,7 @@
  */
 package org.jbpm.services.task;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.HashMap;

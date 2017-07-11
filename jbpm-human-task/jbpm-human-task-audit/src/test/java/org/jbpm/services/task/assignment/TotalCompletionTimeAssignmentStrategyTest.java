@@ -36,7 +36,7 @@ import org.kie.internal.task.api.InternalTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class TotalCompletionTimeAssignmentStrategyTest extends AbstractAssignmentTest {
     private PoolingDataSource pds;

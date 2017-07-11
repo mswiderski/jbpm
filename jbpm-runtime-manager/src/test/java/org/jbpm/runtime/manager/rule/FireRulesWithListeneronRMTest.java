@@ -39,7 +39,7 @@ import org.kie.api.runtime.rule.FactHandle;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class FireRulesWithListeneronRMTest extends AbstractBaseTest {
     private PoolingDataSource pds;

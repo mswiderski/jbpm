@@ -15,7 +15,7 @@
 
 package org.jbpm.runtime.manager.concurrent;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 import org.jbpm.runtime.manager.impl.DefaultRegisterableItemsFactory;
 import org.jbpm.runtime.manager.impl.RuntimeEngineImpl;

@@ -25,7 +25,7 @@ import org.kie.internal.utils.ChainedProperties;
 import org.kie.internal.utils.ClassLoaderUtil;
 import org.subethamail.wiser.Wiser;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class TaskReminderTest extends TaskReminderBaseTest {
 

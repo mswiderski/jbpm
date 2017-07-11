@@ -15,7 +15,7 @@
 
 package org.jbpm.runtime.manager.impl.deploy;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 import org.apache.commons.io.IOUtils;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;

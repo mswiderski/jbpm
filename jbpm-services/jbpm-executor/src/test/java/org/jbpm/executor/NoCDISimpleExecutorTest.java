@@ -17,12 +17,11 @@ package org.jbpm.executor;
 
 import javax.persistence.Persistence;
 
-import org.jbpm.executor.impl.ExecutorServiceImpl;
 import org.jbpm.test.util.ExecutorTestUtil;
 import org.junit.After;
 import org.junit.Before;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 
 public class NoCDISimpleExecutorTest extends BasicExecutorBaseTest{

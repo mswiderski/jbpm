@@ -84,7 +84,7 @@ import org.kie.internal.runtime.manager.RuntimeManagerRegistry;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 import org.kie.internal.task.api.EventService;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class AsyncWorkItemHandlerTest extends AbstractExecutorBaseTest {
 

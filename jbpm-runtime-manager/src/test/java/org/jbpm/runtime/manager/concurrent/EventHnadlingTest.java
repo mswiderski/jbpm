@@ -42,7 +42,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class EventHnadlingTest extends AbstractBaseTest {
 

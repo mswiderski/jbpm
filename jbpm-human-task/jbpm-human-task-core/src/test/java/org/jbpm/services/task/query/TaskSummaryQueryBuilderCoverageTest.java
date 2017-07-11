@@ -21,7 +21,7 @@ import org.kie.internal.task.query.TaskSummaryQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class TaskSummaryQueryBuilderCoverageTest extends HumanTaskServicesBaseTest {
 

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.jbpm.runtime.manager.util.TestUtil;
 import org.jbpm.services.task.identity.JBossUserGroupCallbackImpl;

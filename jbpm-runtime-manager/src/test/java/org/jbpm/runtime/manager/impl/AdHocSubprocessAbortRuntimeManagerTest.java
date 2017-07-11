@@ -44,7 +44,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 import org.kie.internal.task.api.UserGroupCallback;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class AdHocSubprocessAbortRuntimeManagerTest extends AbstractBaseTest {
     

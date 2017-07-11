@@ -75,6 +75,11 @@
     </dependency>
 
     <!-- TEST -->
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
    <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-persistence-jpa</artifactId>
@@ -102,8 +107,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.btm</groupId>
-      <artifactId>btm</artifactId>
+      <groupId>org.jboss.narayana.jta</groupId>
+      <artifactId>narayana-jta</artifactId>
       <scope>test</scope>
     </dependency>
 

@@ -69,7 +69,7 @@ import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 import org.kie.internal.task.api.EventService;
 import org.kie.internal.task.api.UserGroupCallback;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 @RunWith(Parameterized.class)
 public class ExecutionErrorHandlingRuntimeManagerTest extends AbstractBaseTest {

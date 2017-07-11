@@ -51,7 +51,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.TaskServiceFactory;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class JPAWorkItemHandlerTest {
     
@@ -303,11 +303,8 @@ public class JPAWorkItemHandlerTest {
         h2Server = new TestH2Server();
         h2Server.start();
         PoolingDataSource pds = new PoolingDataSource();
-        pds.setMaxPoolSize(10);
-        pds.setMinPoolSize(10);
         pds.setUniqueName("jpaWIH");
-        pds.setClassName("bitronix.tm.resource.jdbc.lrc.LrcXADataSource");
-        pds.setAllowLocalTransactions(true);
+        pds.setClassName("org.h2.jdbcx.JdbcDataSource");
         pds.getDriverProperties().put("user", "sa");
         pds.getDriverProperties().put("url", "jdbc:h2:mem:jpa-wih;MVCC=true");
         pds.getDriverProperties().put("driverClassName", "org.h2.Driver");

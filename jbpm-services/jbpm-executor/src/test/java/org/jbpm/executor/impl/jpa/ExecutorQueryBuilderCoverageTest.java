@@ -18,7 +18,7 @@ import org.kie.internal.runtime.manager.audit.query.RequestInfoQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class ExecutorQueryBuilderCoverageTest {
    

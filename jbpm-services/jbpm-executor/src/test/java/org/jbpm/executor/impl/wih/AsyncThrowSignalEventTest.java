@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -29,15 +28,12 @@ import javax.persistence.Persistence;
 import org.jbpm.executor.ExecutorServiceFactory;
 import org.jbpm.executor.impl.ExecutorServiceImpl;
 import org.jbpm.executor.test.CountDownAsyncJobListener;
-import org.jbpm.runtime.manager.impl.DefaultRegisterableItemsFactory;
 import org.jbpm.services.task.identity.JBossUserGroupCallbackImpl;
 import org.jbpm.test.util.AbstractExecutorBaseTest;
-import org.jbpm.test.util.CountDownProcessEventListener;
 import org.jbpm.test.util.ExecutorTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kie.api.event.process.ProcessEventListener;
 import org.kie.api.executor.ExecutorService;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
@@ -52,7 +48,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.manager.RuntimeManagerRegistry;
 import org.kie.internal.runtime.manager.context.EmptyContext;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class AsyncThrowSignalEventTest extends AbstractExecutorBaseTest {
 

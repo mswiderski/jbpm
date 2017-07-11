@@ -50,9 +50,7 @@ import org.kie.internal.runtime.conf.ForceEagerActivationOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import bitronix.tm.BitronixTransactionManager;
-import bitronix.tm.TransactionManagerServices;
-import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.jbpm.test.PoolingDataSource;
 
 public class PersistenceUtil {
 
@@ -131,11 +129,6 @@ public class PersistenceUtil {
     public static void cleanUp(Map<String, Object> context) {
         if (context != null) {
             
-            BitronixTransactionManager txm = TransactionManagerServices.getTransactionManager();
-            if( txm != null ) { 
-                txm.shutdown();
-            }
-            
             Object emfObject = context.remove(ENTITY_MANAGER_FACTORY);
             if (emfObject != null) {
                 try {
@@ -170,7 +163,7 @@ public class PersistenceUtil {
     }
     
     /**
-     * This sets up a Bitronix PoolingDataSource.
+     * This sets up a PoolingDataSource.
      * 
      * @return PoolingDataSource that has been set up but _not_ initialized.
      */
@@ -182,8 +175,6 @@ public class PersistenceUtil {
 
         pds.setClassName(dsProps.getProperty("className"));
 
-        pds.setMaxPoolSize(Integer.parseInt(dsProps.getProperty("maxPoolSize")));
-        pds.setAllowLocalTransactions(Boolean.parseBoolean(dsProps.getProperty("allowLocalTransactions")));
         for (String propertyName : new String[] { "user", "password" }) {
             pds.getDriverProperties().put(propertyName, dsProps.getProperty(propertyName));
         }
@@ -272,7 +263,7 @@ public class PersistenceUtil {
                     "jdbc:h2:tcp://localhost/target/jbpm-test", 
                     "sa", "", 
                     "org.h2.Driver",
-                    "bitronix.tm.resource.jdbc.lrc.LrcXADataSource", 
+                    "org.h2.jdbcx.JdbcDataSource", 
                     "16", 
                     "true" };
             Assert.assertTrue("Unequal number of keys for default properties", keyArr.length == defaultPropArr.length);
@@ -384,7 +375,7 @@ public class PersistenceUtil {
         }
         
         env.set( ENTITY_MANAGER_FACTORY, context.get(ENTITY_MANAGER_FACTORY) );
-        env.set( TRANSACTION_MANAGER, TransactionManagerServices.getTransactionManager() );
+        env.set( TRANSACTION_MANAGER, com.arjuna.ats.jta.TransactionManager.transactionManager() );
         env.set( GLOBALS, new MapGlobalResolver() );
         
         return env;
