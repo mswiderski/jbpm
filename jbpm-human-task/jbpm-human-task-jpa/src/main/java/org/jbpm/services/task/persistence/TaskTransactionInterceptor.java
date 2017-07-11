@@ -21,6 +21,7 @@ import org.drools.persistence.api.OrderedTransactionSynchronization;
 import org.drools.persistence.api.TransactionManager;
 import org.drools.persistence.api.TransactionManagerFactory;
 import org.drools.persistence.api.TransactionManagerHelper;
+import org.drools.persistence.jpa.AbstractPersistenceContextManager;
 import org.kie.api.KieBase;
 import org.kie.api.runtime.Context;
 import org.kie.api.runtime.Environment;
@@ -39,6 +40,7 @@ import org.kie.internal.task.exception.TaskException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManager;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 
@@ -283,6 +285,7 @@ public class TaskTransactionInterceptor extends AbstractInterceptor {
 			OrderedTransactionSynchronization {
 
 		TaskTransactionInterceptor service;
+		private EntityManager cmdScopedEntityManager;
 
 		public TaskSynchronizationImpl(TaskTransactionInterceptor service) {
 			super(1, "TaskService-"+service.toString());
@@ -290,13 +293,16 @@ public class TaskTransactionInterceptor extends AbstractInterceptor {
 		}
 
 		public void afterCompletion(int status) {
-
 			this.service.tpm.endCommandScopedEntityManager();
+			if(cmdScopedEntityManager != null && cmdScopedEntityManager.isOpen()) {
+				cmdScopedEntityManager.clear();
+			}
 
 		}
 
 		public void beforeCompletion() {
-			// not used
+			// We take a reference on the actual entity manager as it can't be retrieved from the TSR in afterCompletion
+			this.cmdScopedEntityManager = ((AbstractPersistenceContextManager)this.service.tpm).getCommandScopedEntityManager();
 		}
 
 	}
