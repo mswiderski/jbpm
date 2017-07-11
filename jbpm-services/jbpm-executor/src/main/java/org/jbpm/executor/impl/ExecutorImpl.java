@@ -293,6 +293,16 @@ public class ExecutorImpl implements Executor {
         	}
         }
         if (scheduler != null) {
+            // If we don't awaitTermination then it is possible that async threads will still be running at the end
+            // of this method
+            // TODO - do we want to set a maximum time to wait for the scheduler to complete?
+            scheduler.shutdown();
+            while (!scheduler.isTerminated()) {
+                try {
+                    scheduler.awaitTermination(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                }
+            }
             scheduler.shutdownNow();
         }
     }
