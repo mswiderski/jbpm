@@ -688,7 +688,76 @@ public class SessionTest extends AbstractBaseTest {
 				while (i < nbInvocations) {
 				    RuntimeEngine runtime = manager.getRuntimeEngine(EmptyContext.get());
 					boolean success = testCompleteTask(runtime);
-					manager.disposeRuntimeEngine(runtime);
+					int retry = 10;
+					while (retry > 0) {
+						try {
+							manager.disposeRuntimeEngine(runtime);
+							retry = 0;
+						} catch (Throwable t) {
+							// This can happen so we need to re-attempt the dispose
+//						java.lang.RuntimeException: java.lang.IllegalStateException: java.lang.reflect.InvocationTargetException
+//						at org.jbpm.runtime.manager.impl.PerRequestRuntimeManager.disposeRuntimeEngine(PerRequestRuntimeManager.java:156)
+//						at org.jbpm.runtime.manager.concurrent.SessionTest$CompleteTaskRunnable.run(SessionTest.java:692)
+//						at java.lang.Thread.run(Thread.java:745)
+//						Caused by: java.lang.IllegalStateException: java.lang.reflect.InvocationTargetException
+//						at org.drools.persistence.jpa.KnowledgeStoreServiceImpl.buildCommandService(KnowledgeStoreServiceImpl.java:164)
+//						at org.drools.persistence.jpa.KnowledgeStoreServiceImpl.newKieSession(KnowledgeStoreServiceImpl.java:67)
+//						at org.drools.persistence.jpa.KnowledgeStoreServiceImpl.newKieSession(KnowledgeStoreServiceImpl.java:36)
+//						at org.kie.internal.persistence.jpa.JPAKnowledgeService.newStatefulKnowledgeSession(JPAKnowledgeService.java:121)
+//						at org.jbpm.runtime.manager.impl.factory.JPASessionFactory.newKieSession(JPASessionFactory.java:43)
+//						at org.jbpm.runtime.manager.impl.PerRequestRuntimeManager$PerRequestInitializer.initKieSession(PerRequestRuntimeManager.java:212)
+//						at org.jbpm.runtime.manager.impl.RuntimeEngineImpl.getKieSession(RuntimeEngineImpl.java:72)
+//						at org.jbpm.runtime.manager.impl.AbstractRuntimeManager.canDispose(AbstractRuntimeManager.java:195)
+//						at org.jbpm.runtime.manager.impl.PerRequestRuntimeManager.disposeRuntimeEngine(PerRequestRuntimeManager.java:135)
+//	... 2 more
+//						Caused by: java.lang.reflect.InvocationTargetException
+//						at sun.reflect.GeneratedConstructorAccessor58.newInstance(Unknown Source)
+//						at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+//						at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+//						at org.drools.persistence.jpa.KnowledgeStoreServiceImpl.buildCommandService(KnowledgeStoreServiceImpl.java:150)
+//	... 10 more
+//						Caused by: java.lang.RuntimeException: Unable to commit transaction
+//						at org.drools.persistence.jta.JtaTransactionManager.commit(JtaTransactionManager.java:248)
+//						at org.drools.persistence.PersistableRunner.<init>(PersistableRunner.java:117)
+//	... 14 more
+//						Caused by: javax.transaction.RollbackException: ARJUNA016053: Could not commit transaction.
+//						at com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionImple.commitAndDisassociate(TransactionImple.java:1301)
+//						at com.arjuna.ats.internal.jta.transaction.arjunacore.BaseTransaction.commit(BaseTransaction.java:126)
+//						at org.drools.persistence.jta.JtaTransactionManager.commit(JtaTransactionManager.java:245)
+//	... 15 more
+//						Caused by: javax.persistence.OptimisticLockException: Batch update returned unexpected row count from update [0]; actual row count: 0; expected: 1
+//						at org.hibernate.jpa.spi.AbstractEntityManagerImpl.wrapStaleStateException(AbstractEntityManagerImpl.java:1729)
+//						at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1634)
+//						at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1602)
+//						at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1608)
+//						at org.hibernate.jpa.spi.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:1303)
+//						at org.drools.persistence.TriggerUpdateTransactionSynchronization.beforeCompletion(TriggerUpdateTransactionSynchronization.java:76)
+//						at org.drools.persistence.jta.JtaTransactionSynchronizationAdapter.beforeCompletion(JtaTransactionSynchronizationAdapter.java:54)
+//						at com.arjuna.ats.internal.jta.resources.arjunacore.SynchronizationImple.beforeCompletion(SynchronizationImple.java:76)
+//						at com.arjuna.ats.arjuna.coordinator.TwoPhaseCoordinator.beforeCompletion(TwoPhaseCoordinator.java:368)
+//						at com.arjuna.ats.arjuna.coordinator.TwoPhaseCoordinator.end(TwoPhaseCoordinator.java:91)
+//						at com.arjuna.ats.arjuna.AtomicAction.commit(AtomicAction.java:162)
+//						at com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionImple.commitAndDisassociate(TransactionImple.java:1289)
+//	... 17 more
+//						Caused by: org.hibernate.StaleStateException: Batch update returned unexpected row count from update [0]; actual row count: 0; expected: 1
+//						at org.hibernate.jdbc.Expectations$BasicExpectation.checkBatched(Expectations.java:67)
+//						at org.hibernate.jdbc.Expectations$BasicExpectation.verifyOutcome(Expectations.java:54)
+//						at org.hibernate.engine.jdbc.batch.internal.NonBatchingBatch.addToBatch(NonBatchingBatch.java:46)
+//						at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3184)
+//						at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:3063)
+//						at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3443)
+//						at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:145)
+//						at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:586)
+//						at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:460)
+//						at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
+//						at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
+//						at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:1295)
+//						at org.hibernate.jpa.spi.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:1300)
+//	... 24 more
+							t.printStackTrace();
+							retry--;
+						}
+					}
 					if (success) {
 						i++;
 					}
