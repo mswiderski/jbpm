@@ -126,6 +126,9 @@ public abstract class AbstractNodeHandler extends BaseAbstractHandler implements
                 }
                 ((org.jbpm.workflow.core.Node) node).setId(++newId);
             }
+            node.setMetaData("v5NodeId", node.getId());
+            AtomicInteger idGen = (AtomicInteger) parser.getMetaData().get("idGen");
+            node.setId(idGen.getAndIncrement());
         } else {
             AtomicInteger idGen = (AtomicInteger) parser.getMetaData().get("idGen");
             node.setId(idGen.getAndIncrement());

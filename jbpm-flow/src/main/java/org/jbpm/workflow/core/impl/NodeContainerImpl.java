@@ -58,6 +58,14 @@ public class NodeContainerImpl implements Serializable, NodeContainer {
     public Node getNode(final long id) {
         Node node = this.nodes.get(id);
         if (node == null) {
+            if ("true".equalsIgnoreCase(System.getProperty("jbpm.v5.id.strategy"))) {
+                for (Node n : this.nodes.values()) {
+                    Long v5NodeId = (Long) n.getMetaData().get("v5NodeId");
+                    if (v5NodeId != null && v5NodeId.longValue() == id) {
+                        return n;
+                    }
+                }
+            }
             throw new IllegalArgumentException("Unknown node id: " + id);
         }
         return node; 
