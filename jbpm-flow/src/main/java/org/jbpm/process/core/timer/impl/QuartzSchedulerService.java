@@ -15,6 +15,14 @@
  */
 package org.jbpm.process.core.timer.impl;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.drools.core.time.InternalSchedulerService;
 import org.drools.core.time.Job;
 import org.drools.core.time.JobContext;
@@ -29,6 +37,7 @@ import org.jbpm.process.core.timer.TimerServiceRegistry;
 import org.jbpm.process.core.timer.impl.GlobalTimerService.GlobalJobHandle;
 import org.jbpm.process.instance.timer.TimerManager.ProcessJobContext;
 import org.jbpm.process.instance.timer.TimerManager.StartProcessJobContext;
+import org.kie.api.runtime.EnvironmentName;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -37,21 +46,12 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerMetaData;
-import org.quartz.SimpleTrigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.jdbcjobstore.JobStoreCMT;
 import org.quartz.impl.jdbcjobstore.JobStoreSupport;
 import org.quartz.spi.JobStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.NotSerializableException;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Quartz based <code>GlobalSchedulerService</code> that is configured according
@@ -86,6 +86,7 @@ public class QuartzSchedulerService implements GlobalSchedulerService {
     public JobHandle scheduleJob(Job job, JobContext ctx, Trigger trigger) {
         Long id = idCounter.getAndIncrement();
         String jobname = null;
+        String groupName = "jbpm";
         
         if (ctx instanceof ProcessJobContext) {
             ProcessJobContext processCtx = (ProcessJobContext) ctx;
@@ -93,8 +94,16 @@ public class QuartzSchedulerService implements GlobalSchedulerService {
             if (processCtx instanceof StartProcessJobContext) {
                 jobname = "StartProcess-"+((StartProcessJobContext) processCtx).getProcessId()+ "-" + processCtx.getTimer().getId();
             }
+            String deploymentId = (String)processCtx.getKnowledgeRuntime().getEnvironment().get(EnvironmentName.DEPLOYMENT_ID);
+            if (deploymentId != null) {
+                groupName = deploymentId;
+            }
         } else if (ctx instanceof NamedJobContext) {
             jobname = ((NamedJobContext) ctx).getJobName();
+            String deploymentId = ((NamedJobContext) ctx).getDeploymentId();
+            if (deploymentId != null) {
+                groupName = deploymentId;
+            }
         } else {
             jobname = "Timer-"+ctx.getClass().getSimpleName()+ "-" + id;
         
@@ -102,7 +111,7 @@ public class QuartzSchedulerService implements GlobalSchedulerService {
         logger.debug("Scheduling timer with name " + jobname);
         // check if this scheduler already has such job registered if so there is no need to schedule it again        
         try {
-            JobDetail jobDetail = scheduler.getJobDetail(jobname, "jbpm");
+            JobDetail jobDetail = scheduler.getJobDetail(jobname, groupName);
         
             if (jobDetail != null) {
                 TimerJobInstance timerJobInstance = (TimerJobInstance) jobDetail.getJobDataMap().get("timerJobInstance");
@@ -168,7 +177,7 @@ public class QuartzSchedulerService implements GlobalSchedulerService {
         }
 
         // Define a Trigger that will fire "now"
-        org.quartz.Trigger triggerq = new SimpleTrigger(quartzJobHandle.getJobName()+"_trigger", quartzJobHandle.getJobGroup(), nextFireTime);
+        org.quartz.Trigger triggerq = new VetoAwareSimpleTrigger(quartzJobHandle.getJobName()+"_trigger", quartzJobHandle.getJobGroup(), nextFireTime);
             
         // Schedule the job with the trigger
         try {
@@ -214,7 +223,8 @@ public class QuartzSchedulerService implements GlobalSchedulerService {
         
         if (scheduler == null) {            
             try {
-                scheduler = StdSchedulerFactory.getDefaultScheduler();            
+                scheduler = StdSchedulerFactory.getDefaultScheduler();   
+                scheduler.addGlobalTriggerListener(new DeploymentsAwareTriggerListener());
                 scheduler.startDelayed(START_DELAY);
             } catch (SchedulerException e) {
                 throw new RuntimeException("Exception when initializing QuartzSchedulerService", e);
