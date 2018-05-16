@@ -34,7 +34,9 @@ import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.jbpm.runtime.manager.handler.AlwaysFailWorkItemHandler;
 import org.jbpm.runtime.manager.impl.AbstractRuntimeManager;
+import org.jbpm.runtime.manager.impl.DefaultRegisterableItemsFactory;
 import org.jbpm.runtime.manager.impl.jpa.EntityManagerFactoryManager;
 import org.jbpm.runtime.manager.util.TestUtil;
 import org.jbpm.services.task.events.DefaultTaskEventListener;
@@ -60,6 +62,7 @@ import org.kie.api.runtime.manager.RuntimeEnvironmentBuilder;
 import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.task.TaskEvent;
 import org.kie.api.task.TaskLifeCycleEventListener;
 import org.kie.api.task.TaskService;
@@ -387,13 +390,50 @@ public class ExecutionErrorHandlingRuntimeManagerTest extends AbstractBaseTest {
                 .userGroupCallback(userGroupCallback)
                 .addAsset(ResourceFactory.newClassPathResource("BPMN2-BrokenScriptTask.bpmn2"), ResourceType.BPMN2)
                 .addAsset(ResourceFactory.newClassPathResource("BPMN2-UserTaskWithRollback.bpmn2"), ResourceType.BPMN2)
-                .addAsset(ResourceFactory.newClassPathResource("BPMN2-UserTaskCustomTask.bpmn2"), ResourceType.BPMN2);
+                .addAsset(ResourceFactory.newClassPathResource("BPMN2-UserTaskCustomTask.bpmn2"), ResourceType.BPMN2)
+                .addAsset(ResourceFactory.newClassPathResource("error/BPMN2-CallActivity.bpmn2"), ResourceType.BPMN2)
+                .addAsset(ResourceFactory.newClassPathResource("error/BPMN2-CustomTask.bpmn2"), ResourceType.BPMN2)
+                .registerableItemsFactory(new DefaultRegisterableItemsFactory(){
+
+                    @Override
+                    public Map<String, WorkItemHandler> getWorkItemHandlers(RuntimeEngine runtime) {                        
+                        Map<String, WorkItemHandler> handlers = super.getWorkItemHandlers(runtime);
+                        handlers.put("Log", new AlwaysFailWorkItemHandler());
+                        return handlers;
+                    }
+                    
+                });
         
         if (testName.getMethodName().contains("InMemoryStorage")) {
             environmentBuilder.addEnvironmentEntry("ExecutionErrorStorage", storage);
         }
         
         return environmentBuilder.get();
+    }
+    
+    @Test
+    public void testCallActivityFailure() {
+            
+        RuntimeEngine runtime1 = manager.getRuntimeEngine(ProcessInstanceIdContext.get());
+        KieSession ksession1 = runtime1.getKieSession();
+        assertNotNull(ksession1);                 
+        
+        try {
+            ksession1.startProcess("ParentProcessError");
+            fail("Start process should fail due to exception in subprocess");
+        } catch (Throwable e) {
+            // expected
+        }
+        manager.disposeRuntimeEngine(runtime1);
+       
+        ExecutionErrorManager errorManager = ((AbstractRuntimeManager) manager).getExecutionErrorManager();
+        ExecutionErrorStorage storage = errorManager.getStorage();
+        
+        List<ExecutionError> errors = storage.list(0, 10);
+        assertNotNull(errors);
+        assertEquals(1, errors.size());
+        assertExecutionError(errors.get(0), "Process", "SubProcessError", "Log");
+      
     }
     
     private void assertExecutionError(ExecutionError error, String type, String processId, String activityName) {        
