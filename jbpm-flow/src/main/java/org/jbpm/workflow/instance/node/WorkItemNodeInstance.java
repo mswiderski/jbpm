@@ -376,6 +376,9 @@ public class WorkItemNodeInstance extends StateBasedNodeInstance implements Even
             workItemCompleted((WorkItem) event);
         } else if ("workItemAborted".equals(type)) {
             workItemAborted((WorkItem) event);
+        }else if (type.equals("RuleFlow-Activate" + getProcessInstance().getProcessId() + "-" + getNode().getMetaData().get("UniqueId"))) {
+            
+         trigger(null, org.jbpm.workflow.core.Node.CONNECTION_DEFAULT_TYPE);
         } else {
             super.signalEvent(type, event);
         }
